@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -12,17 +14,21 @@ function Register() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
 
-    // Implement your registration logic here
-    // You can use the 'email' and 'password' states to send data to your authentication backend
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      alert('Registration successful!');
+    } catch (error) {
+      alert(`Registration failed: ${error.message}`);
+    }
   };
 
   return (
     <div>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleRegistration}>
         <div>
           <label>Email:</label>
           <input type="email" value={email} onChange={handleEmailChange} />
