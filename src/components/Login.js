@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -12,17 +14,21 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Implement your login logic here
-    // You can use the 'email' and 'password' states to send data to your authentication backend
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      alert('Login successful!');
+    } catch (error) {
+      alert(`Login failed: ${error.message}`);
+    }
   };
 
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div>
           <label>Email:</label>
           <input type="email" value={email} onChange={handleEmailChange} />
